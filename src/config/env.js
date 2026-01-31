@@ -1,5 +1,7 @@
-// Note: On Vercel, environment variables are injected directly via process.env
-// No need for dotenv in production
+// Load dotenv only in local development (not on Vercel)
+if (process.env.NODE_ENV !== 'production' && !process.env.VERCEL) {
+  require('dotenv').config();
+}
 
 module.exports = {
   port: process.env.PORT || 3000,

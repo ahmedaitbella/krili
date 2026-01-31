@@ -4,18 +4,23 @@ const connectDB = require('../src/config/database');
 let isConnected = false;
 
 const handler = async (req, res) => {
+  // Connect to database on cold start
   if (!isConnected) {
     try {
       await connectDB();
       isConnected = true;
+      console.log('✅ MongoDB connected successfully');
     } catch (err) {
-      console.error('Database connection error:', err);
-      return res.status(500).json({ message: 'Database connection error' });
+      console.error('❌ Database connection error:', err);
+      return res.status(500).json({ 
+        error: 'Database connection failed',
+        details: err.message 
+      });
     }
   }
 
-  // Pass the request to Express app
-  app(req, res);
+  // Let Express handle the request
+  return app(req, res);
 };
 
 module.exports = handler;
