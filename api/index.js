@@ -3,16 +3,19 @@ const connectDB = require('../src/config/database');
 
 let isConnected = false;
 
-module.exports = async (req, res) => {
+const handler = async (req, res) => {
   if (!isConnected) {
     try {
       await connectDB();
       isConnected = true;
     } catch (err) {
-      console.error(err);
+      console.error('Database connection error:', err);
       return res.status(500).json({ message: 'Database connection error' });
     }
   }
 
-  return app(req, res);
+  // Pass the request to Express app
+  app(req, res);
 };
+
+module.exports = handler;
